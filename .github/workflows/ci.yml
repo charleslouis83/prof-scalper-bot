@@ -32,7 +32,12 @@ jobs:
         run: |
           pip install flake8 pylint
       - name: Run golangci-lint
-        run: golangci-lint run ./...
+        run: |
+          if git ls-files '*.go' | grep -q .; then
+            golangci-lint run ./...
+          else
+            echo "No Go files to lint"
+          fi
       - name: Run flake8
         run: flake8 .
       - name: Run pylint
@@ -40,7 +45,12 @@ jobs:
           files="$(git ls-files '*.py')"
           if [ -n "$files" ]; then pylint $files; fi
       - name: Run rustfmt
-        run: cargo fmt --all -- --check
+        run: |
+          if [ -f Cargo.toml ]; then
+            cargo fmt --all -- --check
+          else
+            echo "No Rust project"
+          fi
 
   test:
     runs-on: ubuntu-latest
@@ -72,11 +82,21 @@ jobs:
         run: |
           if [ -f package.json ]; then npm install; fi
       - name: Run go tests
-        run: go test ./...
+        run: |
+          if git ls-files '*.go' | grep -q .; then
+            go test ./...
+          else
+            echo "No Go tests"
+          fi
       - name: Run pytest
         run: pytest || true
       - name: Run cargo tests
-        run: cargo test --all
+        run: |
+          if [ -f Cargo.toml ]; then
+            cargo test --all
+          else
+            echo "No Rust tests"
+          fi
       - name: Run jest tests
         run: |
           if [ -f package.json ]; then npm test; fi
