@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: allocator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: allocator
+  template:
+    metadata:
+      labels:
+        app: allocator
+    spec:
+      containers:
+        - name: allocator
+          image: {{.Values.allocator.image}}
+          command: ["sh", "-c", "{{.Values.allocator.command}}"]
+          env:
+            - name: FEATURE_STORE_HOST
+              value: feature-store

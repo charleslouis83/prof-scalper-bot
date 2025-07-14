@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard
+spec:
+  selector:
+    app: dashboard
+  ports:
+    - port: {{.Values.dashboard.service.port}}
+      targetPort: {{.Values.dashboard.service.port}}
