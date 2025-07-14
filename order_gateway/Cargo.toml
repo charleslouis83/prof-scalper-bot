@@ -1,0 +1,16 @@
+[package]
+name = "order_gateway"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+tonic = { version = "0.10", features = ["transport"] }
+redis = { version = "0.23" }
+prost = "0.12"
+
+[build-dependencies]
+tonic-build = "0.10"
+
+[dev-dependencies]
+tokio-test = "0.4"
