@@ -1,0 +1,12 @@
+{
+  "title": "Risk Engine Latency",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Latency",
+      "targets": [
+        {"expr": "risk_engine_latency_seconds"}
+      ]
+    }
+  ]
+}

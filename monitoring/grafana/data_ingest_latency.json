@@ -1,0 +1,12 @@
+{
+  "title": "Data Ingest Latency",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Latency",
+      "targets": [
+        {"expr": "data_ingest_latency_seconds"}
+      ]
+    }
+  ]
+}

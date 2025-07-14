@@ -1,0 +1,12 @@
+{
+  "title": "Order Gateway Latency",
+  "panels": [
+    {
+      "type": "graph",
+      "title": "Latency",
+      "targets": [
+        {"expr": "order_gateway_latency_seconds"}
+      ]
+    }
+  ]
+}

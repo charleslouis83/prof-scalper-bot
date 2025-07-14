@@ -1,0 +1,8 @@
+route:
+  receiver: pagerduty
+
+receivers:
+  - name: pagerduty
+    pagerduty_configs:
+      - routing_key: ${PAGERDUTY_KEY}
+        send_resolved: true
