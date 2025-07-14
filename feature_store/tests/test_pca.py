@@ -1,7 +1,14 @@
+import os
+import sys
 import json
 from unittest import mock
 
 import pandas as pd
+
+# Ensure project root is on the import path so the feature_store package can be
+# imported when tests are executed from this directory.
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+sys.path.insert(0, ROOT)
 
 from feature_store import pca
 
