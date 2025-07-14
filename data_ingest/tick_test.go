@@ -54,8 +54,16 @@ func TestRunClientPublishesTicks(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	go runClient(ctx, wsURL, nil, mp)
+	errCh := make(chan error, 1)
+	go func() { errCh <- runClient(ctx, wsURL, nil, mp) }()
 	time.Sleep(200 * time.Millisecond)
+	select {
+	case err := <-errCh:
+		if err != nil {
+			t.Fatal(err)
+		}
+	default:
+	}
 
 	if len(mp.msgs) != len(msgs) {
 		t.Fatalf("expected %d messages, got %d", len(msgs), len(mp.msgs))
