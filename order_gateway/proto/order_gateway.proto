@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package ordergateway;
+
+message Order {
+  string symbol = 1;
+  double price = 2;
+  double quantity = 3;
+}
+
+message Ack {
+  bool success = 1;
+  string message = 2;
+}
+
+message CancelRequest {
+  string order_id = 1;
+}
+
+message PositionQuery {
+  string symbol = 1;
+}
+
+message Position {
+  string symbol = 1;
+  double quantity = 2;
+}
+
+service OrderGateway {
+  rpc SubmitOrder (Order) returns (Ack);
+  rpc CancelOrder (CancelRequest) returns (Ack);
+  rpc QueryPosition (PositionQuery) returns (Position);
+}

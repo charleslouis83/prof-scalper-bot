@@ -1,0 +1,37 @@
+---
+version: '3.9'
+services:
+  redis:
+    image: redis:6-alpine
+  timescaledb:
+    image: timescale/timescaledb:latest-pg12
+  kafka:
+    image: wurstmeister/kafka
+  data_ingest:
+    build: ./data_ingest
+    depends_on: [redis]
+  feature_store:
+    build: ./feature_store
+    depends_on: [redis, timescaledb]
+  model_server:
+    build: ./model_server
+    depends_on: [feature_store]
+  order_gateway:
+    build: ./order_gateway
+  allocator:
+    image: python:3.10-slim
+    command: python allocator.py
+    depends_on: [feature_store]
+  risk_engine:
+    build: .
+    command: python risk_engine.py
+    depends_on: [kafka]
+  dashboard:
+    build: ./dashboard
+    ports: ['3000:3000']
+  prometheus:
+    image: prom/prometheus
+    volumes: ['./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml']
+  grafana:
+    image: grafana/grafana
+    volumes: ['./monitoring/grafana/:/var/lib/grafana/dashboards']

@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS features (
+    id SERIAL PRIMARY KEY,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    data JSONB NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS pca_transforms (
+    id SERIAL PRIMARY KEY,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    components JSONB NOT NULL
+);
