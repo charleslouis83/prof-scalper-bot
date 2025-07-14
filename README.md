@@ -9,3 +9,10 @@ cd dashboard
 npm install
 npm run dev
 ```
+
+Run the tests:
+
+```bash
+cd dashboard
+npm test
+```
