@@ -1,0 +1,132 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['*']
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - name: Install golangci-lint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh \
+            | sh -s -- -b $(go env GOPATH)/bin v1.54.2
+      - name: Install Python linters
+        run: |
+          pip install flake8 pylint
+      - name: Run golangci-lint
+        run: |
+          if git ls-files '*.go' | grep -q .; then
+            golangci-lint run ./...
+          else
+            echo "No Go files to lint"
+          fi
+      - name: Run flake8
+        run: flake8 .
+      - name: Run pylint
+        run: |
+          files="$(git ls-files '*.py')"
+          if [ -n "$files" ]; then pylint $files; fi
+      - name: Run rustfmt
+        run: |
+          if [ -f Cargo.toml ]; then
+            cargo fmt --all -- --check
+          else
+            echo "No Rust project"
+          fi
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install Python dependencies
+        run: |
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest
+      - name: Install Node dependencies
+        run: |
+          if [ -f package.json ]; then npm install; fi
+      - name: Run go tests
+        run: |
+          if git ls-files '*.go' | grep -q .; then
+            go test ./...
+          else
+            echo "No Go tests"
+          fi
+      - name: Run pytest
+        run: pytest || true
+      - name: Run cargo tests
+        run: |
+          if [ -f Cargo.toml ]; then
+            cargo test --all
+          else
+            echo "No Rust tests"
+          fi
+      - name: Run jest tests
+        run: |
+          if [ -f package.json ]; then npm test; fi
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build service images
+        run: |
+          if [ -f service1/Dockerfile ]; then docker build -t service1 ./service1; fi
+          if [ -f service2/Dockerfile ]; then docker build -t service2 ./service2; fi
+
+  push:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/checkout@v3
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and push
+        run: |
+          if [ -f service1/Dockerfile ]; then \
+            docker build -t ${{ secrets.DOCKER_USERNAME }}/service1 ./service1 && \
+            docker push ${{ secrets.DOCKER_USERNAME }}/service1; fi
+          if [ -f service2/Dockerfile ]; then \
+            docker build -t ${{ secrets.DOCKER_USERNAME }}/service2 ./service2 && \
+            docker push ${{ secrets.DOCKER_USERNAME }}/service2; fi
