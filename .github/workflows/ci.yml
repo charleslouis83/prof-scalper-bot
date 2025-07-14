@@ -33,8 +33,8 @@ jobs:
           pip install flake8 pylint
       - name: Run golangci-lint
         run: |
-          if git ls-files '*.go' | grep -q .; then
-            golangci-lint run ./...
+          if git ls-files 'data_ingest/*.go' | grep -q .; then
+            (cd data_ingest && golangci-lint run ./...)
           else
             echo "No Go files to lint"
           fi
