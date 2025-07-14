@@ -1,0 +1,21 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-ingest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-ingest
+  template:
+    metadata:
+      labels:
+        app: data-ingest
+    spec:
+      containers:
+        - name: data-ingest
+          image: {{.Values.data_ingest.image}}
+          env:
+            - name: REDIS_HOST
+              value: redis

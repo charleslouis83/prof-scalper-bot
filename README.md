@@ -1,3 +1,6 @@
+codex/create-docker-compose-and-helm-chart
+# prof-scalper-bot
+=======
 codex/create-next.js-dashboard-app
 # prof-scalper-bot
 
@@ -27,3 +30,4 @@ infrastructure, order execution, monitoring and dashboards.
 This project aims to provide a modular framework for automated scalping across different markets.
 
 Dev
+
