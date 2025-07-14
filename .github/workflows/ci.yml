@@ -24,6 +24,8 @@ jobs:
         with:
           toolchain: stable
           override: true
+      - name: Install rustfmt
+        run: rustup component add rustfmt
       - name: Install golangci-lint
         run: |
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh \
@@ -33,8 +35,8 @@ jobs:
           pip install flake8 pylint
       - name: Run golangci-lint
         run: |
-          if git ls-files '*.go' | grep -q .; then
-            golangci-lint run ./...
+          if git ls-files 'data_ingest/*.go' | grep -q .; then
+            (cd data_ingest && golangci-lint run ./...)
           else
             echo "No Go files to lint"
           fi
@@ -46,8 +48,8 @@ jobs:
           if [ -n "$files" ]; then pylint --exit-zero $files; fi
       - name: Run rustfmt
         run: |
-          if [ -f Cargo.toml ]; then
-            cargo fmt --all -- --check
+          if [ -f order_gateway/Cargo.toml ]; then
+            cargo fmt --manifest-path order_gateway/Cargo.toml --all -- --check
           else
             echo "No Rust project"
           fi
@@ -77,14 +79,15 @@ jobs:
       - name: Install Python dependencies
         run: |
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f model_server/requirements.txt ]; then pip install -r model_server/requirements.txt; fi
           pip install pytest
       - name: Install Node dependencies
         run: |
-          if [ -f package.json ]; then npm install; fi
+          if [ -f dashboard/package.json ]; then (cd dashboard && npm install); fi
       - name: Run go tests
         run: |
-          if git ls-files '*.go' | grep -q .; then
-            go test ./...
+          if git ls-files 'data_ingest/*.go' | grep -q .; then
+            (cd data_ingest && go test ./...)
           else
             echo "No Go tests"
           fi
@@ -92,14 +95,14 @@ jobs:
         run: python -m pytest
       - name: Run cargo tests
         run: |
-          if [ -f Cargo.toml ]; then
-            cargo test --all
+          if [ -f order_gateway/Cargo.toml ]; then
+            cargo test --manifest-path order_gateway/Cargo.toml --all
           else
             echo "No Rust tests"
           fi
       - name: Run jest tests
         run: |
-          if [ -f package.json ]; then npm test; fi
+          if [ -f dashboard/package.json ]; then (cd dashboard && npm test); fi
 
   build:
     runs-on: ubuntu-latest
