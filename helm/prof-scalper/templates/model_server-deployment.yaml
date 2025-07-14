@@ -1,0 +1,21 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: model-server
+  template:
+    metadata:
+      labels:
+        app: model-server
+    spec:
+      containers:
+        - name: model-server
+          image: {{.Values.model_server.image}}
+          env:
+            - name: FEATURE_STORE_HOST
+              value: feature-store

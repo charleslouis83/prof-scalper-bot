@@ -1,0 +1,43 @@
+---
+redis:
+  image: redis:6-alpine
+
+timescaledb:
+  image: timescale/timescaledb:latest-pg12
+
+kafka:
+  image: wurstmeister/kafka
+
+data_ingest:
+  image: prof-scalper/data_ingest:latest
+
+feature_store:
+  image: prof-scalper/feature_store:latest
+
+model_server:
+  image: prof-scalper/model_server:latest
+
+order_gateway:
+  image: prof-scalper/order_gateway:latest
+
+allocator:
+  image: python:3.10-slim
+  command: "python allocator.py"
+
+risk_engine:
+  image: prof-scalper/risk_engine:latest
+  command: "python risk_engine.py"
+
+dashboard:
+  image: prof-scalper/dashboard:latest
+  service:
+    port: 3000
+
+prometheus:
+  image: prom/prometheus
+  configPath: /etc/prometheus/prometheus.yml
+  hostPath: ./monitoring/prometheus.yml
+
+grafana:
+  image: grafana/grafana
+  dashboardsPath: ./monitoring/grafana/

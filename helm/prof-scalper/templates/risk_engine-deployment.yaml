@@ -1,0 +1,22 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: risk-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: risk-engine
+  template:
+    metadata:
+      labels:
+        app: risk-engine
+    spec:
+      containers:
+        - name: risk-engine
+          image: {{.Values.risk_engine.image}}
+          command: ["sh", "-c", "{{.Values.risk_engine.command}}"]
+          env:
+            - name: KAFKA_HOST
+              value: kafka
