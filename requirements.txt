@@ -3,6 +3,7 @@ numpy
 scikit-learn
 psycopg2-binary
 redis
+requests
 fastapi
 uvicorn
 grpcio

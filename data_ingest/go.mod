@@ -1,6 +1,6 @@
 module github.com/you/prof-scalper-bot/data_ingest
 
-go 1.24.3
+go 1.21
 
 require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
