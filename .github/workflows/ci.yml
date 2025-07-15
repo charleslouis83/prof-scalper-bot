@@ -14,7 +14,8 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.20'
+          go-version: '1.21'
+          cache-dependency-path: data_ingest/go.sum
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -62,7 +63,8 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.20'
+          go-version: '1.21'
+          cache-dependency-path: data_ingest/go.sum
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
