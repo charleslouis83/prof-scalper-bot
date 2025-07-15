@@ -46,7 +46,9 @@ def train_lightgbm(X: pd.DataFrame, y: pd.Series):
 def load_images(image_dir: str):
     import tensorflow as tf
 
-    train_ds = tf.keras.preprocessing.image_dataset_from_directory(
+    # `tf.keras.preprocessing.image_dataset_from_directory` is deprecated in
+    # recent TensorFlow versions. Use the utils variant to avoid warnings.
+    train_ds = tf.keras.utils.image_dataset_from_directory(
         image_dir,
         labels="inferred",
         image_size=(64, 64),
@@ -55,7 +57,7 @@ def load_images(image_dir: str):
         subset="training",
         seed=42,
     )
-    val_ds = tf.keras.preprocessing.image_dataset_from_directory(
+    val_ds = tf.keras.utils.image_dataset_from_directory(
         image_dir,
         labels="inferred",
         image_size=(64, 64),
