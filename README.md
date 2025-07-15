@@ -1,7 +1,6 @@
- codex/create-readme.md-and-.env.example
 # Prof Scalper Bot
 
-This repository contains the source code for **Prof Scalper Bot**, a cryptocurrency trading bot. The bot is designed to run either locally via Docker Compose or in Kubernetes using Helm.
+This repository contains the source code for **Prof Scalper Bot**, a cryptocurrency trading bot. The bot can run locally via Docker Compose or in Kubernetes using Helm.
 
 [Architecture Diagram](https://example.com/architecture.png)
 
@@ -55,13 +54,11 @@ helm upgrade scalper ./helm
 - **Containers fail to start** – ensure Docker is running and ports are free.
 - **Helm errors about missing resources** – verify k3s is running and you have access to the correct cluster context.
 - **Connection issues to the exchange** – check that your API key and secret are correct and that `EXCHANGE_ENV` is set properly.
-=======
-codex/implement-scripts-with-required-functionality
-# prof-scalper-bot
+
+## Scripts
 
 Utility scripts for running research, simulation and deployment tasks.
 
-## Scripts
 - `scripts/research.py` - query TimescaleDB and run walk-forward analysis
 - `scripts/backtest.py` - backtest strategy on historical ticks
 - `scripts/simulate.py` - stub order gateway and record PnL
@@ -69,14 +66,10 @@ Utility scripts for running research, simulation and deployment tasks.
 - `scripts/train_daily.sh` - daily training wrapper with log rotation
 - `scripts/heartbeat.sh` - check service health and restart on failure
 - `scripts/deploy.sh` - upgrade Kubernetes deployment via Helm
-=======
-codex/create-docker-compose-and-helm-chart
-# prof-scalper-bot
-=======
-codex/create-next.js-dashboard-app
-# prof-scalper-bot
 
-This repository contains the Next.js dashboard for Prof Scalper Bot.
+## Dashboard
+
+This repository also contains the Next.js dashboard for Prof Scalper Bot.
 
 To start the app:
 
@@ -92,14 +85,7 @@ Run the tests:
 cd dashboard
 npm test
 ```
-=======
-# Prof Scalper Bot
 
-This monorepo contains services and tools for building an automated scalping bot.
-It includes data ingestion, feature storage, model training, serving
-infrastructure, order execution, monitoring and dashboards.
+## About
 
-This project aims to provide a modular framework for automated scalping across different markets.
-
-
-
+This monorepo contains services and tools for building an automated scalping bot. It includes data ingestion, feature storage, model training, serving infrastructure, order execution, monitoring and dashboards. The project provides a modular framework for automated scalping across different markets.

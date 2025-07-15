@@ -3,6 +3,12 @@ numpy
 scikit-learn
 psycopg2-binary
 redis
+requests
+fastapi
+uvicorn
+grpcio
+tensorflow==2.18.0
+tensorflow-serving-api==2.18.0
+httpx
 flask
 kafka-python
-requests
