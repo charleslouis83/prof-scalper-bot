@@ -41,7 +41,11 @@ func runClient(ctx context.Context, url string, subs []string, pub Publisher) er
 	if err != nil {
 		return err
 	}
-	defer c.Close()
+	defer func() {
+		if err := c.Close(); err != nil {
+			log.Println("close error:", err)
+		}
+	}()
 
 	for _, s := range subs {
 		if err := c.WriteMessage(websocket.TextMessage, []byte(s)); err != nil {
