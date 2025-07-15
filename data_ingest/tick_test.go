@@ -54,7 +54,9 @@ func TestRunClientPublishesTicks(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	go runClient(ctx, wsURL, nil, mp)
+	go func() {
+		_ = runClient(ctx, wsURL, nil, mp)
+	}()
 	time.Sleep(200 * time.Millisecond)
 
 	if len(mp.msgs) != len(msgs) {
