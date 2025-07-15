@@ -37,7 +37,7 @@ func newRedisPublisher() Publisher {
 // runClient connects to the websocket url, sends subscription messages and
 // forwards all incoming messages to the Publisher on channel "ticks".
 func runClient(ctx context.Context, url string, subs []string, pub Publisher) error {
-	c, _, err := websocket.DefaultDialer.Dial(url, nil)
+	c, _, err := websocket.DefaultDialer.DialContext(ctx, url, nil)
 	if err != nil {
 		return err
 	}
@@ -54,8 +54,17 @@ func runClient(ctx context.Context, url string, subs []string, pub Publisher) er
 	}
 
 	for {
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
+		}
+
 		_, msg, err := c.ReadMessage()
 		if err != nil {
+			if ce, ok := err.(*websocket.CloseError); ok && ce.Code == websocket.CloseNormalClosure {
+				return nil
+			}
 			return err
 		}
 		if err := pub.Publish(ctx, "ticks", msg); err != nil {
