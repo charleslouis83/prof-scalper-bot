@@ -3,3 +3,7 @@ numpy
 scikit-learn
 psycopg2-binary
 redis
+flask
+kafka-python
+fastapi
+requests
