@@ -61,7 +61,10 @@ def main():
     parser.add_argument("--out", required=True, help="Output CSV for weights")
     args = parser.parse_args()
 
-    conf = pd.read_csv(args.conf, index_col=0, squeeze=True)
+    conf_df = pd.read_csv(args.conf, index_col=0)
+    if conf_df.shape[1] != 1:
+        raise ValueError("Expected single column for confidence CSV")
+    conf = conf_df.iloc[:, 0]
     cov = pd.read_csv(args.cov, index_col=0)
 
     weights = optimize_portfolio(conf, cov)
