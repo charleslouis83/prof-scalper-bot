@@ -8,5 +8,8 @@ kafka-python
 fastapi
 httpx
 requests
-tensorflow==2.19.0
-tensorflow-serving-api==2.19.0
+fastapi
+uvicorn
+grpcio
+tensorflow==2.18.0
+tensorflow-serving-api==2.18.0
