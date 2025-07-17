@@ -2,7 +2,7 @@
 # Upgrade Kubernetes deployment via Helm.
 set -euo pipefail
 
-CHART="charts/scalper"
+CHART="helm/prof-scalper"
 NAMESPACE="${1:-scalper}"
 
 helm upgrade --install scalper "$CHART" -n "$NAMESPACE"
