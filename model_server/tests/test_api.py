@@ -1,7 +1,14 @@
+import os
+import sys
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
 import tensorflow as tf
+
+# Make sure the project root is available on the Python path so the model_server
+# package can be imported correctly when tests run from this directory.
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+sys.path.insert(0, ROOT)
 
 from model_server.api import app
 
