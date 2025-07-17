@@ -20,6 +20,27 @@ cp .env.example .env
 
 Fill in the API keys and any other secrets.
 
+### Directory Layout
+
+The repository assumes the following service directories exist at the project
+root. Each directory contains a `Dockerfile` and the code for its service,
+which are built and started in step 3 below:
+
+```bash
+data_ingest/
+order_gateway/
+model_server/
+dashboard/
+feature_store/
+risk_engine/
+```
+
+If these directories are missing, create them before continuing:
+
+```bash
+mkdir -p data_ingest order_gateway model_server dashboard feature_store risk_engine
+```
+
 ## Local Development
 
 Run the stack locally with Docker Compose:
