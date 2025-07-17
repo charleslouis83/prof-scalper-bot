@@ -4,7 +4,12 @@ import numpy as np
 import pandas as pd
 
 
-def optimize_portfolio(confidence: pd.Series, cov: pd.DataFrame, cvar_limit: float = 0.05, alpha: float = 0.95) -> pd.Series:
+def optimize_portfolio(
+    confidence: pd.Series,
+    cov: pd.DataFrame,
+    cvar_limit: float = 0.05,
+    alpha: float = 0.95,
+) -> pd.Series:
     """Optimize portfolio weights with CVaR constraint.
 
     Parameters

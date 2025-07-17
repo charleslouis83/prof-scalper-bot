@@ -26,7 +26,13 @@ def test_pagerduty_called(monkeypatch):
         return Resp()
 
     monkeypatch.setattr(risk_engine.requests, 'post', fake_post)
-    engine = risk_engine.RiskEngine(kafka_servers=None, consumer=None, pagerduty_url='http://pager', var_threshold=0.0, es_threshold=0.0)
+    engine = risk_engine.RiskEngine(
+        kafka_servers=None,
+        consumer=None,
+        pagerduty_url='http://pager',
+        var_threshold=0.0,
+        es_threshold=0.0,
+    )
     engine.handle_message({'pnl': -1.0})
     engine.check_thresholds()
     assert calls
